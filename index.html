@@ -69,149 +69,43 @@
             visibility: hidden;
         }
 
-        /* Nowa Animacja Loader */
-        .container {
-            width: 307px;
-            height: 50px;
-            position: relative;
-        }
-
-        .content {
-            display: block;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Lato', sans-serif;
-            font-size: 35px;
-            line-height: 40px;
-            color: #ecf0f1;
-            text-align: center;
-        }
-
-        .content__container {
-            font-weight: 600;
-            overflow: hidden;
-            height: 40px;
-            padding: 0 40px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .content__container:before {
-            content: '[';
-            position: absolute;
-            left: -20px;
-            color: #16a085;
-            font-size: 42px;
-            line-height: 40px;
-            animation: opacityAnim 2s infinite;
-        }
-
-        .content__container:after {
-            content: ']';
-            position: absolute;
-            right: -20px;
-            color: #16a085;
-            font-size: 42px;
-            line-height: 40px;
-            animation: opacityAnim 2s infinite;
-        }
-
-        .content__container__text {
-            display: inline;
-            margin: 0;
+        /* Typewriter Loader */
+        .typewriter {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2rem;
+            color: #ffffff;
+            border-right: 4px solid #00c400; /* Kursor */
             white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typing 4s steps(20, end) forwards, blinkCursor 0.75s step-end infinite;
         }
 
-        .content__container__list {
-            margin: 0;
-            padding-left: 0;
-            list-style: none;
-            animation: change 4s steps(4, end) forwards;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-        }
-
-        .content__container__list__item {
-            line-height: 40px;
-            margin: 0;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-
-        /* Animacje */
-        @keyframes opacityAnim {
-            0%,
-            100% {
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes change {
-            0%, 25% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            33.33%, 58.33% {
-                transform: translateY(-40px);
-                opacity: 1;
-            }
-
-            66.66%, 91.66% {
-                transform: translateY(-80px);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-80px);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
+        @keyframes typing {
             from {
-                opacity: 0;
-                transform: translateY(20px);
+                width: 0;
             }
-
             to {
-                opacity: 1;
-                transform: translateY(0);
+                width: 20ch; /* Liczba znaków w napisie */
+            }
+        }
+
+        @keyframes blinkCursor {
+            from,
+            to {
+                border-right-color: transparent;
+            }
+            50% {
+                border-right-color: #00c400;
             }
         }
 
         /* Responsywność */
         @media (max-width: 768px) {
-            .container {
-                width: 250px;
-                height: 40px;
-            }
-
-            .content {
-                font-size: 28px;
-                line-height: 35px;
-            }
-
-            .content__container:before,
-            .content__container:after {
-                font-size: 35px;
-                left: -15px;
-                right: -15px;
-            }
-
-            .content__container__list__item {
-                line-height: 35px;
+            .typewriter {
+                font-size: 1.5rem;
+                border-right: 3px solid #00c400;
+                width: 16ch; /* Dopasowanie szerokości do mniejszych ekranów */
             }
         }
     </style>
@@ -221,20 +115,8 @@
     <div class="iframe-container">
         <!-- Ekran Ładowania -->
         <div class="loader-overlay" id="loader">
-            <!-- Nowa Animacja Loader -->
-            <div class="container">
-                <div class="content">
-                    <div class="content__container">
-                        <p class="content__container__text">Hello</p>
-                        <ul class="content__container__list">
-                            <li class="content__container__list__item">world!</li>
-                            <li class="content__container__list__item">coder!</li>
-                            <li class="content__container__list__item">users!</li>
-                            <li class="content__container__list__item">uiverse!</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <!-- Typewriter Loader -->
+            <div class="typewriter" id="typewriter">Witam w D-LOGIC ✨</div>
         </div>
 
         <!-- Iframe z Chatbotem -->
