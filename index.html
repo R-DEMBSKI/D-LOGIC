@@ -48,7 +48,6 @@
         }
 
         /* Stylizacja Loader */
-        /* From Uiverse.io by vikas7754 */
         .loader-overlay {
             position: absolute;
             top: 0;
@@ -69,8 +68,7 @@
         }
 
         /* Terminal Loader */
-        .terminal-loader,
-        .cube-loader {
+        .terminal-loader {
             width: 100%;
             max-width: 400px;
             height: 200px;
@@ -82,12 +80,34 @@
             animation: fadeIn 1s ease forwards;
         }
 
+        /* Cube Loader */
         .cube-loader {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: assembleCube 3s ease forwards;
             display: none; /* Ukrywamy kostkę na początku */
         }
 
-        .terminal-header,
-        .cube-header {
+        /* Animacja stopniowego układania kostki */
+        @keyframes assembleCube {
+            0% {
+                opacity: 0;
+                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: rotateX(-30deg) rotateY(180deg) rotateZ(180deg) scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg) scale(1);
+            }
+        }
+
+        /* Terminal Header */
+        .terminal-header {
             position: relative;
             display: flex;
             align-items: center;
@@ -96,8 +116,7 @@
             padding: 6px;
         }
 
-        .terminal-controls,
-        .cube-controls {
+        .terminal-controls {
             position: absolute;
             left: 10px;
             display: flex;
@@ -124,8 +143,7 @@
             background-color: #0b0;
         }
 
-        .terminal-title,
-        .cube-title {
+        .terminal-title {
             color: #eeeeeec1;
             font-size: 1.2rem;
             font-weight: bold;
@@ -144,101 +162,11 @@
             white-space: nowrap;
             overflow: hidden;
             border-right: 2px solid green;
-            animation: typeAndDelete 4s steps(11) 1 forwards,
+            animation: typeAndDelete 4s steps(12) 1 forwards,
                 blinkCursor 0.5s step-end infinite alternate;
             color: rgb(0, 196, 0);
             font-weight: 600;
             font-size: 1.1rem;
-        }
-
-        /* Cube Animation */
-        .cube {
-            width: 100px;
-            height: 100px;
-            transform-style: preserve-3d;
-            animation: animate 5s linear forwards;
-            cursor: pointer;
-            transition: 0.5s;
-        }
-
-        .cube:hover {
-            scale: 1.2;
-            animation: animate 3s linear forwards;
-        }
-
-        .cube__face {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        .faceBox {
-            border: calc(100px / 1000) solid rgba(0, 0, 0, 0.8);
-            width: calc(100px / 3);
-            height: calc(100px / 3);
-            opacity: 1;
-        }
-
-        #cube__face--front span {
-            background-color: #FF4949;
-        }
-
-        #cube__face--right span {
-            background-color: #13CE66;
-        }
-
-        #cube__face--left span {
-            background-color: #2D8EFF;
-        }
-
-        #cube__face--top span {
-            background-color: #FFCC3D;
-        }
-
-        #cube__face--bottom span {
-            background-color: #fefefe;
-        }
-
-        #cube__face--back span {
-            background-color: #f1f03e;
-        }
-
-        #cube__face--front {
-            transform: rotateY(0deg) translateZ(calc(100px / 2));
-        }
-
-        #cube__face--right {
-            transform: rotateY(90deg) translateZ(calc(100px / 2));
-        }
-
-        #cube__face--back {
-            transform: rotateY(180deg) translateZ(calc(100px / 2));
-        }
-
-        #cube__face--left {
-            transform: rotateY(-90deg) translateZ(calc(100px / 2));
-        }
-
-        #cube__face--top {
-            transform: rotateX(90deg) translateZ(calc(100px / 2));
-        }
-
-        #cube__face--bottom {
-            transform: rotateX(-90deg) translateZ(calc(100px / 2));
-        }
-
-        @keyframes animate {
-            0% {
-                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg);
-            }
-
-            100% {
-                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg);
-            }
         }
 
         /* Animacje tekstu */
@@ -254,8 +182,8 @@
                 width: 0;
             }
 
-            45%,
-            55% {
+            50%,
+            60% {
                 width: 12em; /* Dostosowane do "Witam w D-LOGIC" */
             }
 
@@ -272,6 +200,135 @@
 
             to {
                 opacity: 1;
+            }
+        }
+
+        /* Stylizacja kostki */
+        .cube__face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #fff;
+            box-sizing: border-box;
+        }
+
+        .faceBox {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 1px;
+            opacity: 0;
+            animation: assembleFace 1s forwards;
+        }
+
+        /* Animacja pojawiania się poszczególnych elementów kostki */
+        @keyframes assembleFace {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Ustawienia dla poszczególnych ścian kostki */
+        #cube__face--front {
+            transform: rotateY(0deg) translateZ(50px);
+            background-color: #FF4949;
+        }
+
+        #cube__face--back {
+            transform: rotateY(180deg) translateZ(50px);
+            background-color: #f1f03e;
+        }
+
+        #cube__face--right {
+            transform: rotateY(90deg) translateZ(50px);
+            background-color: #13CE66;
+        }
+
+        #cube__face--left {
+            transform: rotateY(-90deg) translateZ(50px);
+            background-color: #2D8EFF;
+        }
+
+        #cube__face--top {
+            transform: rotateX(90deg) translateZ(50px);
+            background-color: #FFCC3D;
+        }
+
+        #cube__face--bottom {
+            transform: rotateX(-90deg) translateZ(50px);
+            background-color: #fefefe;
+        }
+
+        /* Animacja rotacji kostki */
+        .cube {
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            animation: rotateCube 5s linear forwards;
+            transition: 0.5s;
+        }
+
+        .cube:hover {
+            animation: rotateCubeHover 3s linear forwards;
+        }
+
+        @keyframes rotateCube {
+            from {
+                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes rotateCubeHover {
+            from {
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg);
+            }
+
+            to {
+                transform: rotateX(-30deg) rotateY(720deg) rotateZ(720deg);
+            }
+        }
+
+        /* Responsywność */
+        @media (max-width: 768px) {
+            .loader-overlay {
+                padding: 10px;
+            }
+
+            .terminal-loader {
+                max-width: 90%;
+                height: 180px;
+            }
+
+            .text {
+                font-size: 1rem;
+            }
+
+            .cube-loader {
+                width: 80px;
+                height: 80px;
+            }
+
+            .cube__face {
+                width: 80px;
+                height: 80px;
+            }
+
+            .faceBox {
+                width: 25px;
+                height: 25px;
             }
         }
     </style>
@@ -379,7 +436,7 @@
             src="https://rafaldembski-d-logic-llama3-1-instruct-o1-450b.hf.space"
             frameborder="0"
             id="chatbotIframe"
-            onload="hideLoader()"
+            onload="startCubeAnimation()"
         ></iframe>
     </div>
 
@@ -388,27 +445,27 @@
     </footer>
 
     <script>
-        function hideLoader() {
+        function startCubeAnimation() {
             const loader = document.getElementById('loader');
             const terminalLoader = document.getElementById('terminalLoader');
             const cubeLoader = document.getElementById('cubeLoader');
             const iframe = document.getElementById('chatbotIframe');
 
-            // Ukrywamy terminal loader
-            terminalLoader.style.display = 'none';
+            // Po 4 sekundach ukrywamy terminal loader i pokazujemy cube loader
+            setTimeout(() => {
+                terminalLoader.style.display = 'none';
+                cubeLoader.style.display = 'block';
+            }, 4000); // 4 sekundy
 
-            // Pokazujemy cube loader
-            cubeLoader.style.display = 'flex';
-
-            // Po zakończeniu animacji kostki, ukrywamy loader i pokazujemy iframe
+            // Po zakończeniu animacji kostki (5 sekund od rozpoczęcia) ukrywamy loader i pokazujemy iframe
             setTimeout(() => {
                 loader.classList.add('hidden'); // Ukrywamy cały loader-overlay
                 iframe.style.display = 'block'; // Pokazujemy iframe
-            }, 5000); // Czas trwania animacji kostki w ms (5s)
+            }, 9000); // 4 sekundy + 5 sekund animacji kostki
         }
 
         // Opcjonalnie: Pokazanie loadera ponownie, jeśli iframe się przeładowuje
-        document.getElementById('chatbotIframe').addEventListener('load', hideLoader);
+        document.getElementById('chatbotIframe').addEventListener('load', startCubeAnimation);
     </script>
 </body>
 
