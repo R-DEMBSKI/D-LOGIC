@@ -58,6 +58,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             z-index: 9999; /* Wysoki z-index, aby pokryć cały kontener iframe */
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
@@ -67,165 +68,120 @@
             visibility: hidden;
         }
 
-        /* Terminal Loader */
-        .terminal-loader {
-            width: 100%;
-            max-width: 400px;
-            height: 200px;
-            background: #1c1c1c;
-            border: 1px solid #ffffff3e;
-            border-radius: 10px;
+        /* Typewriter Loader */
+        .typewriter-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .typewriter-title {
+            color: #00c400;
+            font-size: 2rem;
+            font-weight: bold;
+            white-space: nowrap;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-            animation: fadeIn 1s ease forwards;
+            border-right: 4px solid #00c400;
+            width: 0;
+            animation: typing 4s steps(20, end) forwards, blinkCursor 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 16ch; /* "Witam w D-LOGIC" ma 16 znaków */
+            }
+        }
+
+        @keyframes blinkCursor {
+            from,
+            to {
+                border-right-color: transparent;
+            }
+            50% {
+                border-right-color: #00c400;
+            }
         }
 
         /* Cube Loader */
         .cube-loader {
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
             position: relative;
             transform-style: preserve-3d;
             animation: assembleCube 3s ease forwards;
             display: none; /* Ukrywamy kostkę na początku */
+            margin-top: 20px;
         }
 
-        /* Animacja stopniowego układania kostki */
-        @keyframes assembleCube {
-            0% {
-                opacity: 0;
-                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg) scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: rotateX(-30deg) rotateY(180deg) rotateZ(180deg) scale(1);
-            }
-            100% {
-                opacity: 1;
-                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg) scale(1);
-            }
-        }
-
-        /* Terminal Header */
-        .terminal-header {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #343434;
-            padding: 6px;
-        }
-
-        .terminal-controls {
+        /* Rubik's Cube Faces */
+        .rubiks-cube .face {
             position: absolute;
-            left: 10px;
+            width: 150px;
+            height: 150px;
             display: flex;
-            gap: 7px;
+            flex-wrap: wrap;
+            transform-style: preserve-3d;
         }
 
-        .control {
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: #777;
-        }
-
-        .control.close {
-            background-color: #e33;
-        }
-
-        .control.minimize {
-            background-color: #ee0;
-        }
-
-        .control.maximize {
-            background-color: #0b0;
-        }
-
-        .terminal-title {
-            color: #eeeeeec1;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .content {
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .text {
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 2px solid green;
-            animation: typeAndDelete 4s steps(12) 1 forwards,
-                blinkCursor 0.5s step-end infinite alternate;
-            color: rgb(0, 196, 0);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        /* Animacje tekstu */
-        @keyframes blinkCursor {
-            50% {
-                border-right-color: transparent;
-            }
-        }
-
-        @keyframes typeAndDelete {
-            0%,
-            10% {
-                width: 0;
-            }
-
-            50%,
-            60% {
-                width: 12em; /* Dostosowane do "Witam w D-LOGIC" */
-            }
-
-            90%,
-            100% {
-                width: 0;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Stylizacja kostki */
-        .cube__face {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #fff;
+        .rubiks-cube .face .cube {
+            width: 45px;
+            height: 45px;
             box-sizing: border-box;
-        }
-
-        .faceBox {
-            width: 30px;
-            height: 30px;
-            background-color: rgba(255, 255, 255, 0.5);
-            margin: 1px;
+            border: 1px solid #000;
             opacity: 0;
-            animation: assembleFace 1s forwards;
+            animation: assembleFace 0.3s forwards;
         }
 
-        /* Animacja pojawiania się poszczególnych elementów kostki */
+        /* Kolory ścian */
+        .rubiks-cube .face.front .cube { background: #ff3d00; }
+        .rubiks-cube .face.back .cube { background: #f1f03e; }
+        .rubiks-cube .face.left .cube { background: #ffeb3b; }
+        .rubiks-cube .face.right .cube { background: #13CE66; }
+        .rubiks-cube .face.top .cube { background: #2196f3; }
+        .rubiks-cube .face.bottom .cube { background: #ffffff; }
+
+        /* Pozycjonowanie ścian */
+        .rubiks-cube .face.front {
+            transform: rotateY(0deg) translateZ(75px);
+        }
+
+        .rubiks-cube .face.back {
+            transform: rotateY(180deg) translateZ(75px);
+        }
+
+        .rubiks-cube .face.left {
+            transform: rotateY(-90deg) translateZ(75px);
+        }
+
+        .rubiks-cube .face.right {
+            transform: rotateY(90deg) translateZ(75px);
+        }
+
+        .rubiks-cube .face.top {
+            transform: rotateX(90deg) translateZ(75px);
+        }
+
+        .rubiks-cube .face.bottom {
+            transform: rotateX(-90deg) translateZ(75px);
+        }
+
+        /* Animacje kostki */
+        @keyframes assembleCube {
+            from {
+                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg) scale(1);
+                opacity: 1;
+            }
+        }
+
         @keyframes assembleFace {
             from {
                 opacity: 0;
@@ -237,65 +193,15 @@
             }
         }
 
-        /* Ustawienia dla poszczególnych ścian kostki */
-        #cube__face--front {
-            transform: rotateY(0deg) translateZ(50px);
-            background-color: #FF4949;
-        }
-
-        #cube__face--back {
-            transform: rotateY(180deg) translateZ(50px);
-            background-color: #f1f03e;
-        }
-
-        #cube__face--right {
-            transform: rotateY(90deg) translateZ(50px);
-            background-color: #13CE66;
-        }
-
-        #cube__face--left {
-            transform: rotateY(-90deg) translateZ(50px);
-            background-color: #2D8EFF;
-        }
-
-        #cube__face--top {
-            transform: rotateX(90deg) translateZ(50px);
-            background-color: #FFCC3D;
-        }
-
-        #cube__face--bottom {
-            transform: rotateX(-90deg) translateZ(50px);
-            background-color: #fefefe;
-        }
-
-        /* Animacja rotacji kostki */
-        .cube {
-            width: 100px;
-            height: 100px;
-            transform-style: preserve-3d;
-            animation: rotateCube 5s linear forwards;
-            transition: 0.5s;
-        }
-
-        .cube:hover {
+        /* Animacja rotacji kostki po najechaniu */
+        .rubiks-cube:hover {
             animation: rotateCubeHover 3s linear forwards;
-        }
-
-        @keyframes rotateCube {
-            from {
-                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg);
-            }
-
-            to {
-                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg);
-            }
         }
 
         @keyframes rotateCubeHover {
             from {
                 transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg);
             }
-
             to {
                 transform: rotateX(-30deg) rotateY(720deg) rotateZ(720deg);
             }
@@ -307,28 +213,24 @@
                 padding: 10px;
             }
 
-            .terminal-loader {
-                max-width: 90%;
-                height: 180px;
-            }
-
-            .text {
-                font-size: 1rem;
+            .typewriter-title {
+                font-size: 1.5rem;
+                border-right: 3px solid #00c400;
             }
 
             .cube-loader {
-                width: 80px;
-                height: 80px;
+                width: 100px;
+                height: 100px;
             }
 
-            .cube__face {
-                width: 80px;
-                height: 80px;
+            .rubiks-cube .face {
+                width: 100px;
+                height: 100px;
             }
 
-            .faceBox {
-                width: 25px;
-                height: 25px;
+            .rubiks-cube .face .cube {
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -338,94 +240,90 @@
     <div class="iframe-container">
         <!-- Ekran Ładowania -->
         <div class="loader-overlay" id="loader">
-            <!-- Terminal Loader -->
-            <div class="terminal-loader" id="terminalLoader">
-                <div class="terminal-header">
-                    <div class="terminal-title">Witam w D-LOGIC</div>
-                    <div class="terminal-controls">
-                        <div class="control close"></div>
-                        <div class="control minimize"></div>
-                        <div class="control maximize"></div>
-                    </div>
-                </div>
-                <div class="content">
-                    <div class="text">Loading...</div>
-                </div>
+            <!-- Typewriter Loader -->
+            <div class="typewriter-loader" id="typewriterLoader">
+                <div class="typewriter-title">Witam w D-LOGIC</div>
             </div>
 
             <!-- Cube Loader -->
             <div class="cube-loader" id="cubeLoader">
-                <div class="cube">
-                    <div class="cube__face" id="cube__face--front">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                <div class="rubiks-cube">
+                    <!-- Front Face -->
+                    <div class="face front">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
 
-                    <div class="cube__face" id="cube__face--back">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                    <!-- Back Face -->
+                    <div class="face back">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
 
-                    <div class="cube__face" id="cube__face--right">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                    <!-- Left Face -->
+                    <div class="face left">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
 
-                    <div class="cube__face" id="cube__face--left">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                    <!-- Right Face -->
+                    <div class="face right">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
 
-                    <div class="cube__face" id="cube__face--top">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                    <!-- Top Face -->
+                    <div class="face top">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
 
-                    <div class="cube__face" id="cube__face--bottom">
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
-                        <span class="faceBox"></span>
+                    <!-- Bottom Face -->
+                    <div class="face bottom">
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
+                        <div class="cube"></div>
                     </div>
                 </div>
             </div>
@@ -436,7 +334,7 @@
             src="https://rafaldembski-d-logic-llama3-1-instruct-o1-450b.hf.space"
             frameborder="0"
             id="chatbotIframe"
-            onload="startCubeAnimation()"
+            onload="startLoaderSequence()"
         ></iframe>
     </div>
 
@@ -445,27 +343,33 @@
     </footer>
 
     <script>
-        function startCubeAnimation() {
+        function startLoaderSequence() {
             const loader = document.getElementById('loader');
-            const terminalLoader = document.getElementById('terminalLoader');
+            const typewriterLoader = document.getElementById('typewriterLoader');
             const cubeLoader = document.getElementById('cubeLoader');
             const iframe = document.getElementById('chatbotIframe');
 
-            // Po 4 sekundach ukrywamy terminal loader i pokazujemy cube loader
+            // Pokazujemy iframe tylko po zakończeniu animacji kostki
+            // Ukrywamy loader-overlay po zakończeniu animacji kostki
+
+            // Pierwsza animacja: Typewriter (4 sekundy)
+            // Druga animacja: Cube (3 sekundy)
+
+            // Po 4 sekundach ukrywamy typewriter i pokazujemy kostkę
             setTimeout(() => {
-                terminalLoader.style.display = 'none';
-                cubeLoader.style.display = 'block';
+                typewriterLoader.style.display = 'none';
+                cubeLoader.style.display = 'flex';
             }, 4000); // 4 sekundy
 
-            // Po zakończeniu animacji kostki (5 sekund od rozpoczęcia) ukrywamy loader i pokazujemy iframe
+            // Po 7 sekundach (4 + 3) ukrywamy loader i pokazujemy iframe
             setTimeout(() => {
                 loader.classList.add('hidden'); // Ukrywamy cały loader-overlay
                 iframe.style.display = 'block'; // Pokazujemy iframe
-            }, 9000); // 4 sekundy + 5 sekund animacji kostki
+            }, 7000); // 7 sekund łącznie
         }
 
         // Opcjonalnie: Pokazanie loadera ponownie, jeśli iframe się przeładowuje
-        document.getElementById('chatbotIframe').addEventListener('load', startCubeAnimation);
+        document.getElementById('chatbotIframe').addEventListener('load', startLoaderSequence);
     </script>
 </body>
 
