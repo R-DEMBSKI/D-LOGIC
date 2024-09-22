@@ -85,7 +85,7 @@
             overflow: hidden;
             border-right: 4px solid #00c400;
             width: 0;
-            animation: typing 4s steps(20, end) forwards, blinkCursor 0.75s step-end infinite;
+            animation: typing 4s steps(16, end) forwards, blinkCursor 0.75s step-end infinite;
         }
 
         @keyframes typing {
@@ -123,17 +123,19 @@
             position: absolute;
             width: 150px;
             height: 150px;
-            display: flex;
-            flex-wrap: wrap;
-            transform-style: preserve-3d;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
         }
 
         .rubiks-cube .face .cube {
-            width: 45px;
-            height: 45px;
+            width: 46px; /* 150px / 3 - 2px gap */
+            height: 46px;
             box-sizing: border-box;
             border: 1px solid #000;
             opacity: 0;
+            transform: scale(0.5);
             animation: assembleFace 0.3s forwards;
         }
 
@@ -173,12 +175,12 @@
         /* Animacje kostki */
         @keyframes assembleCube {
             from {
-                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg) scale(0.5);
                 opacity: 0;
+                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg) scale(0.5);
             }
             to {
-                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg) scale(1);
                 opacity: 1;
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(360deg) scale(1);
             }
         }
 
@@ -207,6 +209,17 @@
             }
         }
 
+        /* Opóźnienie animacji poszczególnych kostek */
+        .rubiks-cube .face .cube:nth-child(1) { animation-delay: 0.1s; }
+        .rubiks-cube .face .cube:nth-child(2) { animation-delay: 0.2s; }
+        .rubiks-cube .face .cube:nth-child(3) { animation-delay: 0.3s; }
+        .rubiks-cube .face .cube:nth-child(4) { animation-delay: 0.4s; }
+        .rubiks-cube .face .cube:nth-child(5) { animation-delay: 0.5s; }
+        .rubiks-cube .face .cube:nth-child(6) { animation-delay: 0.6s; }
+        .rubiks-cube .face .cube:nth-child(7) { animation-delay: 0.7s; }
+        .rubiks-cube .face .cube:nth-child(8) { animation-delay: 0.8s; }
+        .rubiks-cube .face .cube:nth-child(9) { animation-delay: 0.9s; }
+
         /* Responsywność */
         @media (max-width: 768px) {
             .loader-overlay {
@@ -216,6 +229,7 @@
             .typewriter-title {
                 font-size: 1.5rem;
                 border-right: 3px solid #00c400;
+                width: 12ch; /* "Witam w D-LOGIC" */
             }
 
             .cube-loader {
@@ -229,9 +243,20 @@
             }
 
             .rubiks-cube .face .cube {
-                width: 30px;
-                height: 30px;
+                width: 32px; /* 100px / 3 - 2px gap */
+                height: 32px;
             }
+
+            /* Zmniejszenie opóźnień dla mniejszych ekranów */
+            .rubiks-cube .face .cube:nth-child(1) { animation-delay: 0.05s; }
+            .rubiks-cube .face .cube:nth-child(2) { animation-delay: 0.1s; }
+            .rubiks-cube .face .cube:nth-child(3) { animation-delay: 0.15s; }
+            .rubiks-cube .face .cube:nth-child(4) { animation-delay: 0.2s; }
+            .rubiks-cube .face .cube:nth-child(5) { animation-delay: 0.25s; }
+            .rubiks-cube .face .cube:nth-child(6) { animation-delay: 0.3s; }
+            .rubiks-cube .face .cube:nth-child(7) { animation-delay: 0.35s; }
+            .rubiks-cube .face .cube:nth-child(8) { animation-delay: 0.4s; }
+            .rubiks-cube .face .cube:nth-child(9) { animation-delay: 0.45s; }
         }
     </style>
 </head>
@@ -349,11 +374,8 @@
             const cubeLoader = document.getElementById('cubeLoader');
             const iframe = document.getElementById('chatbotIframe');
 
-            // Pokazujemy iframe tylko po zakończeniu animacji kostki
-            // Ukrywamy loader-overlay po zakończeniu animacji kostki
-
-            // Pierwsza animacja: Typewriter (4 sekundy)
-            // Druga animacja: Cube (3 sekundy)
+            // Początkowo ukrywamy iframe
+            iframe.style.display = 'none';
 
             // Po 4 sekundach ukrywamy typewriter i pokazujemy kostkę
             setTimeout(() => {
